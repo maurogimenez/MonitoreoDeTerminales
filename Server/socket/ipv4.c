@@ -1,5 +1,4 @@
 #include "mysocket.h"
-
 #include <stdlib.h>
 #include <netdb.h>
 #include <stdio.h>
@@ -11,13 +10,8 @@
 #include <signal.h>
 #include <string.h>
 
-#define debug 1
 
 int ipv4(int *sd,char *puerto){
-
-    printf("%d",*sd);
-
-    if (1 == debug) printf("ipv4.c\nPort: %s", puerto);
 
 	struct sockaddr_in dir = {};
 	memset(&dir,0,sizeof(struct sockaddr_in));

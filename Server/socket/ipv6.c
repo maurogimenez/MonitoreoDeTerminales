@@ -1,5 +1,4 @@
 #include "mysocket.h"
-
 #include <stdlib.h>
 #include <netdb.h>
 #include <stdio.h>
@@ -11,12 +10,9 @@
 #include <signal.h>
 #include <string.h>
 
-#define debug 0
 
 int ipv6(int *sd,char *puerto){
-
-    if (1 == debug)   printf("iv6.c\nPort:%s",puerto);
-
+	
 	struct sockaddr_in6 dir = {};
 	int opc = 1;
 
