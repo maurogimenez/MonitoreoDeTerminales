@@ -6,29 +6,28 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define debug 0
 
-int getStats (char *path, pcInfo *thisPc, int buffsize){
+int getStats (char *path, char **fichero, int buffsize){
 
     int fd,leido=1;
-
-    if ( NULL == ( thisPc->mem = (pcInfo*) malloc (10000)) )    { free(thisPc); return -1; }
-            
-            if (1 == debug) printf("%s\n",path);
+    char *aux=*fichero;
     
-    if ( (fd=open(path,O_RDONLY)) < 0){  perror("GetStats:open"); return -1;}
+    if (debug){ printf("Ruta:%s\n",path); printf("Buffsize:%d\n",buffsize);}
+                           
+    if ( (fd=open(path,O_RDONLY)) < 0){  perror("getStats:open"); return -1;}
     
-    while ( leido != 0 ){
-        if ( 0 > (leido=read(fd,thisPc->mem,buffsize)) ){
-            perror("GetStats:read");
+    while ( 0 < (leido=read(fd,*fichero,buffsize)) ){
+        if ( -1 == leido){
+            perror("getStats:read");
             close (fd);
             return -1;
         }
-    printf("%s",thisPc->mem);
-    //thisPc->mem = thisPc->mem + leido;
+        *fichero=&((*fichero)[leido]);
     }
     close(fd);
-
+    *fichero=aux;
     return 0;
 }

@@ -4,7 +4,7 @@ CC := gcc $(CFLAGS)
 
 all: $(TARGETS)
 
-clientMon: monitorClient.c socket/ipv4.c socket/ipv6.c socket/unspec.c getStats.c getStatsController.c
+clientMon: monitorClient.c getStats.c getStatsController.c Malloc.c format2protocol.c send2server.c Write.c refreshWait.c
 	$(CC) -o $@ $^
 
 clean:  
@@ -12,3 +12,6 @@ clean:
 
 test: all
 	./clientMon
+
+strace: all
+	strace -f ./clientMon
