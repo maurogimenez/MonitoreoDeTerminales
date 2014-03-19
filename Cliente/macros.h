@@ -22,7 +22,6 @@
     #define UPTIME_INFO "uptime"
     #define VERSION_INFO "version"
     #define OS_INFO "issue"
-    #define NET_INFO "net/..."
 
     /******MONITOR SERVER DEFAULTS******/
     #define DEFAULT_SERVERIP "127.0.0.1"
