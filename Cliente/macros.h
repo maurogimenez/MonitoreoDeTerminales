@@ -29,5 +29,6 @@
 
     /**********BUFFER*SIZE**************/
     #define BUFF_SIZE 2000
+    #define LARGEST_BUFFER 4500  //Se usa para almacenar TODA la informacion de una determinada seccion del reporte. Por lo tanto tiene que tener correspondencia con el maximo tamaño de las macro declaradas en TAMAÑO
 
 #endif
