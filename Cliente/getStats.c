@@ -29,5 +29,8 @@ int getStats (char *path, char **fichero, int buffsize){
     }
     close(fd);
     *fichero=aux;
+
+    if (debug){ printf("/****************************************Buffer********************\n%s\n**************************************",*fichero); sleep(4);}
+    
     return 0;
 }

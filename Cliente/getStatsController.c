@@ -12,20 +12,20 @@ int getStatsController(pcInfo* thisPc){
     
     char *dataPath;
     char *nombre;
-    if ( 0 > Malloc(&dataPath,100) ) { return -1; }
-    if ( 0 > Malloc(&nombre,30) )    { return -1; }
+    if ( 0 > Malloc(&dataPath,100) )        { return -1; }
+    if ( 0 > Malloc(&nombre,NAME_SIZE) )    { return -1; }
     
     //NOMBRE
-    gethostname(nombre,30);
+    if (0 > gethostname(nombre,NAME_SIZE))  {perror("gethostname"); return -1;}
     if (0 > snprintf(thisPc->name, strlen(nombre)+3, "%s\r\n", (char *)nombre) ){ 
-        perror("GetStatsController: snprintf");
+        perror("getStatsController: snprintf");
         return -1; 
     }   
 
     //MEM_INFO
     memset(dataPath,'\0', 100);
     if (0 > snprintf(dataPath, strlen(PROC_PATH)+strlen(MEM_INFO)+2, "%s/%s", (char *)PROC_PATH, (char *)MEM_INFO) ){ 
-        perror("GetStatsController: snprintf");
+        perror("getStatsController: snprintf");
         return -1; 
     }   
     if ( 0 > getStats (dataPath,&thisPc->mem, BUFF_SIZE))  { return -1; }
@@ -33,7 +33,7 @@ int getStatsController(pcInfo* thisPc){
     //CPU_INFO
     memset(dataPath,'\0', 100);
     if (0 > snprintf(dataPath, strlen(PROC_PATH)+strlen(CPU_INFO)+2, "%s/%s", (char *)PROC_PATH, (char *)CPU_INFO) ){
-         perror("GetStatsController: snprintf");
+         perror("getStatsController: snprintf");
          return -1;
     }
     if ( 0 > getStats (dataPath,&thisPc->cpu, BUFF_SIZE))  { return -1; }
@@ -41,7 +41,7 @@ int getStatsController(pcInfo* thisPc){
     //HDD_INFO
     memset(dataPath,'\0', 100);
     if (0 > snprintf(dataPath, strlen(PROC_PATH)+strlen(HDD_INFO)+2, "%s/%s", (char *)PROC_PATH, (char *)HDD_INFO) ){
-          perror("GetStatsController: snprintf");
+          perror("getStatsController: snprintf");
           return -1;
     }
     if ( 0 > getStats (dataPath, &thisPc->hdd, BUFF_SIZE))  { return -1; }
@@ -49,7 +49,7 @@ int getStatsController(pcInfo* thisPc){
     //UPTIME_INFO
     memset(dataPath,'\0', 100);
     if (0 > snprintf(dataPath, strlen(PROC_PATH)+strlen(UPTIME_INFO)+2, "%s/%s", (char *)PROC_PATH, (char *)UPTIME_INFO) ){
-          perror("GetStatsController: snprintf");
+          perror("getStatsController: snprintf");
           return -1;
     } 
     if ( 0 > getStats (dataPath, &thisPc->uptime, BUFF_SIZE))  { return -1; }
@@ -57,7 +57,7 @@ int getStatsController(pcInfo* thisPc){
     //VERSION_INFO
     memset(dataPath, '\0', 100);
     if (0 > snprintf(dataPath, strlen(PROC_PATH)+strlen(VERSION_INFO)+2, "%s/%s", (char *)PROC_PATH, (char *)VERSION_INFO) ){
-          perror("GetStatsController: snprintf");
+          perror("getStatsController: snprintf");
           return -1;
     }
     if ( 0 > getStats (dataPath, &thisPc->version, BUFF_SIZE))  { return -1; }
@@ -65,7 +65,7 @@ int getStatsController(pcInfo* thisPc){
     //OS_INFO
     memset(dataPath, '\0', 100);
     if (0 > snprintf(dataPath, strlen(ETC_PATH)+strlen(OS_INFO)+2, "%s/%s", (char *)ETC_PATH, (char *)OS_INFO) ){
-          perror("GetStatsController: snprintf");
+          perror("getStatsController: snprintf");
           return -1;
     }
     if ( 0 > getStats (dataPath, &thisPc->issue, BUFF_SIZE))  { return     -1; }
