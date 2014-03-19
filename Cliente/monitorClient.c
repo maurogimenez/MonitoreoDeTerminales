@@ -30,15 +30,15 @@ int main (int argc, char **argv){
     signal(SIGALRM, refreshWait);
 
     if (NULL == (thisPc=(pcInfo *) malloc(sizeof(pcInfo))) ) { perror("malloc"); return -1; }
-    if (0 > Malloc(&(thisPc->header),40))           { return -1; }
-    if (0 > Malloc(&(thisPc->name),NAME_SIZE))      { return -1; }
-    if (0 > Malloc(&(thisPc->mem),MEM_SIZE))        { return -1; }
-    if (0 > Malloc(&(thisPc->cpu),CPU_SIZE))        { return -1; }
-    if (0 > Malloc(&(thisPc->hdd),HDD_SIZE))        { return -1; }
-    if (0 > Malloc(&(thisPc->uptime),UPTIME_SIZE))  { return -1; }
-    if (0 > Malloc(&(thisPc->version),VERSION_SIZE)){ return -1; }
-    if (0 > Malloc(&(thisPc->issue),ISSUE_SIZE))    { return -1; }
-    if (0 > Malloc(&(thisPc->end),END_SIZE))        { return -1; }
+    if (0 > Malloc(&(thisPc->header),HEADER_SIZE))           { return -1; }
+    if (0 > Malloc(&(thisPc->name),NAME_SIZE))               { return -1; }
+    if (0 > Malloc(&(thisPc->mem),MEM_SIZE))                 { return -1; }
+    if (0 > Malloc(&(thisPc->cpu),CPU_SIZE))                 { return -1; }
+    if (0 > Malloc(&(thisPc->hdd),HDD_SIZE))                 { return -1; }
+    if (0 > Malloc(&(thisPc->uptime),UPTIME_SIZE))           { return -1; }
+    if (0 > Malloc(&(thisPc->version),VERSION_SIZE))         { return -1; }
+    if (0 > Malloc(&(thisPc->issue),ISSUE_SIZE))             { return -1; }
+    if (0 > Malloc(&(thisPc->end),END_SIZE))                 { return -1; }
 
     //Manejo argumentos
 	while ((opcion = getopt(argc, argv, "p:s:t:h")) >= 0 ){   //s->server ip  t->refresh time
