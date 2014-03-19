@@ -1,4 +1,5 @@
-#include "mysocket.h"
+#include "mySocket.h"
+
 #include <stdlib.h>
 #include <netdb.h>
 #include <stdio.h>

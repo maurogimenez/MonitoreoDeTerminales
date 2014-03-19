@@ -1,4 +1,5 @@
-#include "mysocket.h"
+#include "mySocket.h"
+
 #include <stdlib.h>
 #include <netdb.h>
 #include <stdio.h>
@@ -7,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <signal.h>
 #include <string.h>
 
@@ -25,7 +27,7 @@ int ipv4(int *sd,char *puerto){
 	dir.sin_family = AF_INET;
 	dir.sin_port = htons(atoi(puerto));
 	dir.sin_addr.s_addr = INADDR_ANY;
-	if (bind(*sd,(struct sockaddr *)&dir,sizeof dir) < 0){
+    if (bind(*sd,(struct sockaddr *)&dir,sizeof dir) < 0){
 		perror ("bind_ipv4");
 		return -1;
 	}

@@ -1,5 +1,5 @@
 #include "myWebServer.h"
-#include "../server.h"
+#include "../utils/myUtils.h"
 
 #include <regex.h>
 #include <unistd.h>
@@ -36,6 +36,8 @@ int config (char *cfgfile, char *puerto, char *droot){
 		perror("parse");
 		return -1;
 	}
+    droot=strtok(droot,"#");
+    droot[strlen(droot)-1]='\0';
 
 //^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
 
@@ -43,7 +45,7 @@ int config (char *cfgfile, char *puerto, char *droot){
 		perror("parse");
 		return -1;
 	}
-
+    puerto[strlen(puerto)-1]='\0';
 
     if (1 == debug) printf("fd:%d\nbuff:%s\ndroot:%s\nport:%s\n",fd,buff,droot,puerto);
 

@@ -13,7 +13,6 @@
 #include <arpa/inet.h>
 #include <signal.h>
 
-#define REFRESH_TIME refresh
 #define debug 0
 
 int main (int argc, char **argv){
@@ -21,7 +20,7 @@ int main (int argc, char **argv){
     struct pcInfo *thisPc;  //Estructura que contendra los datos de la pc (ver monitor.h)
     
     int opcion;
-    int refresh = 180;
+    int refresh_time = 180;
 
     int sockDesc;
     struct sockaddr_in serverSock = {};
@@ -45,7 +44,7 @@ int main (int argc, char **argv){
 	while ((opcion = getopt(argc, argv, "p:s:t:h")) >= 0 ){   //s->server ip  t->refresh time
 		switch (opcion){
 			case 't':
-				REFRESH_TIME = atoi(optarg);
+				refresh_time = atoi(optarg);
 				break;
             case 's':
                 serverIp = optarg;
@@ -78,13 +77,12 @@ int main (int argc, char **argv){
             perror ("connect");
             return -1;
     }else{   //Conexion exitosa
-            while (refresh != 0){       //Hago que reporte a REFRESH_TIME
-                getStatsController(thisPc);
-                format2protocol(thisPc);
-                send2server(thisPc,sockDesc);
-                alarm(refresh);
-                pause();
-            }
+        while ( 0 != refresh_time ){       //Hago que reporte a refresh_time
+            getStatsController(thisPc);
+            format2protocol(thisPc);
+            send2server(thisPc,sockDesc);
+            alarm(refresh_time);
+        }
     return 0;
     }
 }
