@@ -7,6 +7,8 @@
 
 #define debug 0
 
+//Revisar para modificar el protocolo por uno mas versatil tipo XML
+
 int format2protocol (pcInfo *thisPc){
 
     char *aux;
