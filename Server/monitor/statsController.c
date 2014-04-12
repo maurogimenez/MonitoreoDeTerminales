@@ -24,33 +24,22 @@ int statsController (int mon_csd){
    
     int leido=0;
     unsigned long size=0;
-    char *aux;
-    char data[2000];
     char *buffer;
 
-    memset(data,'\0',2000);
-    if ( Malloc(&aux,5000) ) { return -1; }
-    
-    //Leo la cabecera y obtengo el tamanio del reporte
-    if ( 0 >= (size=getSize(mon_csd)) ){
-        size=REP_SIZE;
-        printf("No se pudo establecer el tamanio del reporte. Se asume %d por defecto",REP_SIZE);
-    }
-    if(debug)   printf("Size en int: %ld\n",size);
+    while(1) {
+        //Leo la cabecera y obtengo el tamanio del reporte
+        if ( 0 >= (size=getSize(mon_csd)) ){
+            size=REP_SIZE;
+            printf("No se pudo establecer el tamanio del reporte. Se asume %d por defecto",REP_SIZE);
+        }
+        if (debug)   printf("Size en int: %ld\n",size);
    
-    if ( Malloc(&buffer,size) ) { return -1; }
-    
-    //Leo el socket en busca de la informacion
-    while((leido = read(mon_csd,buffer,size)) > 0){
-        //puts("PASADA");
-        write(STDOUT_FILENO,buffer,leido);
-        memset(aux,'\0',5000);
-        //parse(".*[\r\n]$",buffer,0,aux);
-        //getStats(aux,leido);
+        if ( Malloc(&buffer,size) ) { return -1; }
+        if (0 < (leido=read(mon_csd,buffer,size)) )
+        getStats(buffer,leido);
         //semaforo decremento
         //  Escribir en la sh_mem
         //semaforo incremento
-
     }
     return 0;
 }

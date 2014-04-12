@@ -1,4 +1,5 @@
 #include "monitor.h"
+#include "../utils/myUtils.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -7,35 +8,51 @@
 
 #define debug 0
 
-int getStats(char *token, int leido){
+int getStats(char *buffer, int leido){
 
-    if (debug)  printf("Token: %s",token);
-    
-    if (strstr(token,"CLI:")){
+    if (debug)  printf("Token: %s",buffer);
+    char aux[5000];
+
+    parse("CLI:.*[\r\n]",buffer,0,aux);
+    if (strstr(aux,"CLI:")){
         puts("CLI");
-        return 0;
-    }else if (strstr(token,"MEM:")){
+    }
+
+    parse("MEM:.*[\r\n]",buffer,0,aux);
+    if (strstr(aux,"MEM:")){
         puts("MEM");
-        return 0;
-    }else if (strstr(token,"CPU:")){
-        puts("HDD");
-        return 0;
-    }else if (strstr(token,"HDD:")){
-        puts("ISS");
-        return 0;
-    }else if(strstr(token,"UPT:")){
-        puts("VER");
-        return 0;
-    }else if(strstr(token,"VER:")){
+    }
+    
+    parse("CPU:.*[\r\n]",buffer,0,aux);
+    if (strstr(aux,"CPU:")){
         puts("CPU");
-        return 0;
-    }else if(strstr(token,"ISS:")){
+    }
+    
+    parse("HDD:.*[\r\n]",buffer,0,aux);
+    if (strstr(aux,"HDD:")){
+        puts("HDD");
+    }
+    
+    parse("UPT:.*[\r\n]",buffer,0,aux);
+    if(strstr(aux,"UPT:")){
         puts("UPT");
-        return 0;
-    }else if(strstr(token,"/MDT")){
+    }
+    
+    parse("VER:.*[\r\n]",buffer,0,aux);
+    if(strstr(aux,"VER:")){
+        puts("VER");
+    }
+    
+    parse("ISS:.*[\r\n]",buffer,0,aux);
+    if(strstr(aux,"ISS:")){
+        puts("ISS");
+    }
+    
+    parse("/MDT:.*[\r\n]",buffer,0,aux);
+    if(strstr(aux,"/MDT")){
         puts("/MDT");
-        return 0;
-    }else
-        return -1;   
+    }
+
+    return 0;
 
 }

@@ -18,8 +18,8 @@
 #include <semaphore.h>
 #include <pthread.h>
 
+#define MON_PORT "12185" //Puerto del MonitorServer:Numero primo descubierto por Dubner
 #define BUFF_SIZE 1024
-#define MON_PORT "12185" //Numero primo descubierto por Dubner
 #define debug 0
 
 int main (int argc, char * const argv[]){

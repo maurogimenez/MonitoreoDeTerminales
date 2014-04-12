@@ -10,7 +10,6 @@
 
 unsigned long getSize(int mon_csd){
 
-
     int leido=0;
     char cabecera[40];
     char aux[23];

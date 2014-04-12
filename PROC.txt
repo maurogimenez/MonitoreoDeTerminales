@@ -1,0 +1,54 @@
+Linux[edit]
+The Linux implementation of /proc also clones that of Plan 9.[citation needed] Under Linux, /proc includes a directory for each running process (including kernel processes) at /proc/PID, containing information about that process, notably including:
+/proc/PID/cmdline, which contains the command that originally started the process.
+/proc/PID/cwd, a symlink to the current working directory of the process.
+/proc/PID/environ, a file containing the names and contents of the environment variables that affect the process.
+/proc/PID/exe, a symlink to the original executable file, if it still exists (a process may continue running after its original executable has been deleted or replaced).
+/proc/PID/fd, a directory containing a symbolic link for each open file descriptor.
+/proc/PID/fdinfo, a directory containing files which describe the position and flags for each open file descriptor.
+/proc/PID/maps, a text file containing information about mapped files and blocks (like heap and stack).
+/proc/PID/mem, a binary file representing the process's virtual memory, can only be accessed by a ptrace'ing process.
+/proc/PID/root, a symlink to the root path as seen by the process. For most processes this will be a link to / unless the process is running in a chroot jail.
+/proc/PID/status, a file containing basic information about a process including its run state and memory usage.
+/proc/PID/task, a directory containing hard links to any tasks that have been started by this (i.e.: the parent) process.
+Obtaining the PID can be done with utilities like pgrep, pidof or ps:
+$ ls -l /proc/$(pgrep -n python)/fd        # List all file descriptors of the most recently started `python' process
+samtala 0
+lrwx------ 1 baldur baldur 64 2011-03-18 12:31 0 -> /dev/pts/3
+lrwx------ 1 baldur baldur 64 2011-03-18 12:31 1 -> /dev/pts/3
+lrwx------ 1 baldur baldur 64 2011-03-18 12:31 2 -> /dev/pts/3
+$ readlink /proc/$(pgrep -n python)/exe    # List executable used to launch the most recently started `python' process  
+/usr/bin/python3.1
+It also includes non-process-related system information, although in the 2.6 kernel much of that information moved to a separate pseudo-file system, sysfs, mounted under /sys:
+depending on the mode of power management (if at all), either directory, /proc/acpi or /proc/apm, which predate sysfs and contain various bits of information about the state of power management.
+/proc/buddyinfo, information about the buddy algorithm which handles memory fragmentation.[2]
+/proc/bus, containing directories representing various buses on the computer, such as input/PCI/USB. This has been largely superseded by sysfs under /sys/bus which is far more informative.
+/proc/fb, a list of the available framebuffers
+/proc/cmdline, giving the boot options passed to the kernel
+/proc/cpuinfo, containing information about the CPU, such as its vendor (and CPU family, model and model names which should allow users to identify the CPU) and its speed (CPU clockspeed), cache size, number of siblings, cores, and CPU flags. It contains a value called "bogomips", frequently misconstrued as a measure of CPU speed, like a benchmark, but it does not actually measure any sensible (for end-users) value at all. It occurs as a side-effect of kernel timer calibration and yields highly varying values depending on CPU type, even at equal clock speeds.
+On multi-core CPUs, /proc/cpuinfo contains the two fields "siblings" and "cpu cores" whereas the following calculation is applied:[3]
+"siblings" = (HT per CPU package) * (# of cores per CPU package)
+"cpu cores" = (# of cores per CPU package)
+A CPU package means physical CPU which can have multiple cores (single core for one, dual core for two, quad core for four). This allows to better distinguish between hyper-threading and dual-core, i.e. the number of HT per CPU package can be calculated by siblings / CPU cores. If both values for a CPU package are the same, then hyper-threading is not supported.[4] For instance, a CPU package with siblings=2 and "cpu cores"=2 is a dual-core CPU but doesn't support HT.
+/proc/crypto, a list of available cryptographic modules
+/proc/devices, a list of character and block devices sorted by device ID but giving the major part of the /dev name too
+/proc/diskstats, giving some information (including device numbers) for each of the logical disk devices
+/proc/filesystems, a list of the file systems supported by the kernel at the time of listing
+/proc/interrupts, /proc/iomem, /proc/ioports and the directory /proc/irq, giving some self-explanatory details about the devices (physical or logical) using the various system resources
+/proc/meminfo, containing a summary of how the kernel is managing its memory.
+/proc/modules, one of the most important files in /proc, containing a list of the kernel modules currently loaded . It gives some indication ( not always entirely correct) of dependencies.
+/proc/mounts, a symlink to self/mounts which contains a list of the currently mounted devices and their mount points (and which file system is in use and what mount options are in use).
+/proc/net, a directory containing a lot of really useful information about the network stack, in particular nf_conntrack which lists existing network connections (particularly useful for tracking routing when iptables FORWARD is used to redirect network connections).
+/proc/partitions, a list of the device-numbers, their size and /dev names which the kernel has identified as existing partitions (for example if /dev/sda contains a partition table, then /dev/sda1 and others will appear as available partitions). Note that if a partition isn't listed in this file, then a patched version of losetup is around which can essentially mount the partition and connect /dev/loop[n] devices to the various partitions (though it is not certain if these will then appear in /proc/partitions).
+/proc/scsi, giving information about any devices connected via a SCSI or RAID controller
+a symbolic link to the current (traversing) process at /proc/self (i.e. /proc/PID/ where PID is that of the current process).
+/proc/slabinfo, listing statistics on the caches for frequently-used objects in the Linux kernel
+/proc/swaps, a list of the active swap partitions, their various sizes and priorities
+Access to dynamically-configurable kernel options under /proc/sys. Under /proc/sys appear directories representing the areas of kernel, containing readable and writable virtual files.
+For example, a commonly referenced virtual file is /proc/sys/net/ipv4/ip_forward, because it is necessary for routing firewalls or tunnels. The file contains either a '1' or a '0': if it is 1 then the IPv4 stack will forward packets not meant for the local host, if it is 0 then it will not.
+/proc/sysvipc, containing memory sharing and inter-process communication (IPC) information.
+/proc/tty, containing information about the current terminals; /proc/tty/driver looks to be a list of the different types of tty available each of which is a list of those of each type
+/proc/uptime, the length of time the kernel has been running since boot and spent in idle mode (both in seconds)
+/proc/version, containing the Linux kernel version, distribution number, gcc version number (used to build the kernel) and any other pertinent information relating to the version of the kernel currently running
+other files depending on various hardware, module configurations, and changes to the kernel.
+The basic utilities that use /proc under Linux come in the procps (/proc processes) package, and only function in conjunction with a mounted /proc.
