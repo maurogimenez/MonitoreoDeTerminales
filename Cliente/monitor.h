@@ -3,6 +3,7 @@
     
     typedef struct pcInfo{
         char *header;
+        char *time;
         char *name;
         char *mem;
         char *cpu;
@@ -11,7 +12,6 @@
         char *version;
         char *issue;
         char *net;
-        char *extra;
         char *end;
     }pcInfo;
 

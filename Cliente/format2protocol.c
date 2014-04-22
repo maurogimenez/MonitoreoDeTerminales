@@ -1,3 +1,24 @@
+/*
+ * format2protocol.c
+ * Adecua los datos contenidos en la estructura thisPC
+ * al formato preestablecido por el protocolo,
+ * dejando todo listo para ser enviado por el socket
+
+********************Protocol***********************
+
+@MDT@ rep_size 123123123123@@  //El tamanio siempre es 40
+@TIM@hh:mm:ss@@
+@CLI_S@123123@@
+@CLI@FRisma-Lenovo@@
+@CPU_S@123123@@
+@CPU@XXXXXXXXXXXXXXXXXXXXXXXXXXX@@
+@MEM_S@123123@@
+@MEM@XXXXXXXXXXXXXXXXXXXXXXXXXXX@@
+@HDD_S@123123@@
+@HDD@XXXXXXXXXXXXXXXXXXXXXXXXXXX@@
+@/MDT@
+*/
+
 #include "monitor.h"
 #include "macros.h"
 
@@ -17,60 +38,66 @@ int format2protocol (pcInfo *thisPc){
     //Nombre
     strncpy(aux,thisPc->name,strlen(thisPc->name));
     aux[strlen(aux) -1]='\0';
-    if (0 > snprintf(thisPc->name, strlen(thisPc->name)+7, "CLI:%s\r\n",(char *)aux) )  {goto error;} 
+    if (0 > snprintf(thisPc->name, strlen(thisPc->name)+8, "@CLI@%s@@",(char *)aux) )  {goto error;} 
     if(debug) printf("%s\n\n",thisPc->name);
 
-    //modificar MEM
+    //MEM
     strncpy(aux,thisPc->mem,strlen(thisPc->mem));
     aux[strlen(aux) -1]='\0';
-    if (0 > snprintf(thisPc->mem, strlen(thisPc->mem)+7, "MEM:%s\r\n",(char *)aux) )    {goto error;} 
+    if (0 > snprintf(thisPc->mem, strlen(thisPc->mem)+8, "@MEM@%s@@",(char *)aux) )    {goto error;} 
     if(debug) printf("%s\n\n",thisPc->mem);
     
-    //modificar CPU
+    //CPU
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->cpu,strlen(thisPc->cpu));
     aux[strlen(aux) -1]='\0';
-    if (0 > snprintf(thisPc->cpu, strlen(thisPc->cpu)+7, "CPU:%s\r\n",(char *)aux) )    {goto error;} 
+    if (0 > snprintf(thisPc->cpu, strlen(thisPc->cpu)+8, "@CPU@%s@@",(char *)aux) )    {goto error;} 
     if(debug) printf("%s\n\n",thisPc->cpu);
     
-    //modificar HDD
+    //HDD
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->hdd,strlen(thisPc->hdd));
     aux[strlen(aux) -1]='\0';
-    if (0 > snprintf(thisPc->hdd, strlen(thisPc->hdd)+7, "HDD:%s\r\n",(char *)aux) )    {goto error;} 
+    if (0 > snprintf(thisPc->hdd, strlen(thisPc->hdd)+8, "@HDD@%s@@",(char *)aux) )    {goto error;} 
     if(debug) printf("%s\n\n",thisPc->hdd);
     
 
-    //modificar UPTIME
+    //UPTIME
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->uptime,strlen(thisPc->uptime));
     aux[strlen(aux) -1]='\0';
-    if (0 > snprintf(thisPc->uptime, strlen(thisPc->uptime)+7, "UPT:%s\r\n",(char *)aux) )     {goto error;}
+    if (0 > snprintf(thisPc->uptime, strlen(thisPc->uptime)+8, "@UPT@%s@@",(char *)aux) )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->uptime);
  
-    //modificar ISSUE
+    //ISSUE
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->issue,strlen(thisPc->issue));
     aux[strlen(aux) -1]='\0';
-    if (0 > snprintf(thisPc->issue, strlen(thisPc->issue)+7, "ISS:%s\r\n",(char *)aux) )     {goto error;}
+    if (0 > snprintf(thisPc->issue, strlen(thisPc->issue)+8, "@ISS@%s@@",(char *)aux) )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->issue);
  
 
-    //modificar VERSION
+    //VERSION
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->version,strlen(thisPc->version));
     aux[strlen(aux) -1]='\0';
-    if (0 > snprintf(thisPc->version, strlen(thisPc->version)+7, "VER:%s\r\n",(char *)aux) )     {goto error;}
+    if (0 > snprintf(thisPc->version, strlen(thisPc->version)+8, "@VER@%s@@",(char *)aux) )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->version);
 
     
     //Header
     memset(thisPc->header,'X',HEADER_SIZE);
-    if (0 > snprintf(thisPc->header, HEADER_SIZE, "MDT rep_size %ld\r\n",(long)(strlen(thisPc->mem)+ strlen(thisPc->hdd)+strlen(thisPc->cpu)+strlen(thisPc->uptime)+strlen(thisPc->version)+strlen(thisPc->issue))) )     {goto error;}
+    if (0 > snprintf(thisPc->header, HEADER_SIZE, "@MDT@ rep_size %ld@@",(long)(strlen(thisPc->mem)+ strlen(thisPc->hdd)+strlen(thisPc->cpu)+strlen(thisPc->uptime)+strlen(thisPc->version)+strlen(thisPc->issue))) )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->header);
    
+    //Time
+    strncpy(aux,thisPc->time,strlen(thisPc->time));
+    memset(thisPc->header,'X',HEADER_SIZE);
+    if (0 > snprintf(thisPc->time, strlen(thisPc->time)+8, "@TIM@%s@@",(char *)aux) )     {goto error;}
+    if(debug) printf("%s\n\n",thisPc->time);
+
     //Final
-    if (0 > snprintf(thisPc->end, END_SIZE, "/MDT%c",4) )     {goto error;}
+    if (0 > snprintf(thisPc->end, END_SIZE, "@/MDT@") )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->end);
     
     return 0;

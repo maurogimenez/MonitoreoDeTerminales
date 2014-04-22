@@ -1,3 +1,15 @@
+/*
+ *getStatsController.c
+Esta funcion arma las rutas del /proc/'algo',
+y pasa el control a getStats() quien lee del archivo
+y lo guarda en la estructura thisPC.
+Se itera este proceso hasta que se hayan leido todos
+los /proc/'algo'.
+Por otro lado, tambien llena la estructura thisPC con
+el nombre de la PC y la hora actual.
+*
+*/
+
 #include "monitor.h"
 #include "macros.h"
 
@@ -5,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #define debug 0
 
@@ -14,14 +27,25 @@ int getStatsController(pcInfo* thisPc){
     
     char *dataPath;
     char *nombre;
+
+    time_t rawtime;
+    struct tm* timeinfo;
+
     if ( 0 > Malloc(&dataPath,100) )        { return -1; }
     if ( 0 > Malloc(&nombre,NAME_SIZE) )    { return -1; }
     
-    //NOMBRE_PC********
+    //NOMBRE_PC*******
     memset(thisPc->name,'\0', NAME_SIZE);
     if (0 > gethostname(nombre,NAME_SIZE))  {perror("gethostname"); goto error;}
-    if (0 > snprintf(thisPc->name, strlen(nombre)+3, "%s\r\n", (char *)nombre))    {perror("snprintf");goto error;} 
+    if (0 > snprintf(thisPc->name, strlen(nombre)+1, "%s", (char *)nombre))    {perror("snprintf");goto error;} 
     if (debug)  printf("NOMBRE\n%s\n",thisPc->name);
+
+    //TIME********
+    memset(thisPc->time,'\0', TIME_SIZE);
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    if (0 > snprintf(thisPc->time, TIME_SIZE, "%s", asctime(timeinfo)))    {perror("snprintf");goto error;} 
+    if (debug)  printf("TIME\n%s\n",thisPc->time);
 
     //MEM_INFO**********
     memset(dataPath,'\0', 100);

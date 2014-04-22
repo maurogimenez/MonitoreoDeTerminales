@@ -31,6 +31,7 @@ int main (int argc, char **argv){
 
     if (NULL == (thisPc=(pcInfo *) malloc(sizeof(pcInfo))) ) { perror("malloc"); return -1; }
     if (0 > Malloc(&(thisPc->header),HEADER_SIZE))           { return -1; }
+    if (0 > Malloc(&(thisPc->time),TIME_SIZE))               { return -1; }
     if (0 > Malloc(&(thisPc->name),NAME_SIZE))               { return -1; }
     if (0 > Malloc(&(thisPc->mem),MEM_SIZE))                 { return -1; }
     if (0 > Malloc(&(thisPc->cpu),CPU_SIZE))                 { return -1; }

@@ -1,3 +1,11 @@
+/*
+ * getStats.c
+ * Lee desde el archivo que recibe en 'path'
+ * una cantidad predefinida por 'buffsize' y
+ * guarda lo que lee en 'fichero'
+ *
+*/
+
 #include "monitor.h"
 
 #include <sys/types.h>

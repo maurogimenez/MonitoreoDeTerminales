@@ -1,16 +1,15 @@
+/*
+ * send2server.c
+ * Escribe en el socket, la estructura thisPc
+*/
 #include "monitor.h"
 
-#include <stdio.h>
-#include <unistd.h>
 #include <string.h>
-#include <stdlib.h>
-
-#include <sys/types.h>
-#include <sys/wait.h>
 
 int send2server (pcInfo *thisPc, int sd){
 
     if ( 0 != Write(sd,thisPc->header,40) )                         { return -1; }
+    if ( 0 != Write(sd,thisPc->time,strlen(thisPc->time)) )         { return -1; }
     if ( 0 != Write(sd,thisPc->name,strlen(thisPc->name)) )         { return -1; }
     if ( 0 != Write(sd,thisPc->mem,strlen(thisPc->mem)) )           { return -1; }
     if ( 0 != Write(sd,thisPc->cpu,strlen(thisPc->cpu)) )           { return -1; }

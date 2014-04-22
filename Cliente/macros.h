@@ -3,6 +3,7 @@
 
     /************TAMAÑOS****************/
     #define HEADER_SIZE 40
+    #define TIME_SIZE 25
     #define NAME_SIZE 30
     #define MEM_SIZE 3000
     #define CPU_SIZE 3000
