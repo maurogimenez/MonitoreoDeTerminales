@@ -1,0 +1,88 @@
+﻿Monitoreo de Terminales
+
+
+Funcionamiento general
+Bajo la arquitectura Cliente-Servidor, los clientes se conectan a un socket TCP del servidor enviando un reporte sobre su estado (nombre, memoria, disco, OS, tiempo desde el ultimo reinicio, CPU).
+Dicho servidor procesa los datos y los deja disponible para su consulta a través de un Web Server quien es el encargado de mostrar la información detallada de cada terminal o la de todos, según se desee.
+
+
+Arquitectura del Servidor
+El servidor tiene 2 sockets por los que escucha tanto las peticiones HTTP como los reportes de los clientes. Ambos sockets pueden configurarse para usar IPV4 como IPV6.
+Los puertos por defecto son 8080 y 12185 para el Web Server y el Monitor Server respectivamente. Siendo el puerto 8080 y el document root parametrizables desde un archivo de configuración (configuration.cfg)
+
+
+Arquitectura del Monitor Server
+Por cada cliente que se conecte al socket del Monitor Server (puerto 12185), el servidor lanza un proceso hijo Pn que se encarga de recibir el estado de la terminal parseando los datos acorde al protocolo definido.
+Cada hijo escribe en una memoria compartida, como mecanismo de intercomunicación, el estado de cada cliente. Dicha memoria compartida contiene semáforos para la sincronización preservando la integridad de los datos.
+Un hilo es el encargado de leer la memoria compartida y persistir la información en un archivo/bbdd para tener un historial.
+  
+
+¿Porque el Monitor Server lanza hijos(procesos) en vez de hilos?
+Las dos diferencias principales radican en que los procesos NO comparten memoria como lo hacen los hilos y además, es más costoso crear un proceso que un hijo puesto que requiere de cambios de contexto (modo kernel - modo usuario).
+Por lo expuesto anteriormente concluimos que lo que mejor se ajusta para satisfacer las necesidades del Monitor Server son los procesos siendo los siguientes nuestros argumentos:
+* Cada estado de un proceso, que atiende un reporte, es independiente y por lo tanto no afecta a otros procesos.
+*  La velocidad con que se procesa el reporte no es crítica para el funcionamiento.
+* Para el análisis de la informacion de cada reporte no es necesaria la interaccion de distintos procesos.
+
+
+Arquitectura del WebServer
+Ante un nuevo HTTP Request, el web server lanza un hijo que parsea la petición devolviendo un HTTP Response acorde.
+
+Arquitectura del Cliente
+El cliente es un mono-proceso que se conecta al socket del server para enviar los reportes cada un intervalo de tiempo preestablecido.
+
+Detalles de la implementación
+El desarrollo se lleva a cabo utilizando el lenguaje de programación C, usando como entorno de desarrollo VIM. El proyecto cumple con los estándares POSIX garantizando el funcionamiento en cualquier plataforma Unix like.
+Omitiendo algunos detalles, lo que se usa es:
+* fork()                         ------> para la creacion de procesos hijos
+* pthread_create()         ------> para la creación de hilos
+* mmap()                 ------> como mecanismo de intercomunicación
+* signal()                 ------> concretamente para procesar SIG_ALRM
+* snprintf()                 ------> para la concatenación de cadenas
+* estructuras
+* punteros
+
+
+Implementación del Server
+Se hace necesario distinguir entre el Monitor Server y el Web Server.
+Monitor Server
+Es compatible para IPV4 e IPV6, aceptando como parámetro a la hora de ejecución -4 o -6 para forzar cualquiera de los dos anteriores. Si no se especifica, su funcionamiento está garantizado debido a la versatilidad provista por unspec.
+El puerto definido para este socket TCP es el 12185.
+Antes de escuchar en el socket, el servidor crea una memoria compartida (anónima) y un hilo para su lectura.
+Por cada nueva conexión, se crea un hijo mediante la función fork()
+Web Server
+Al igual que para el Monitor Server, el socket del Web Server es compatible con IPV4 e IPV6. El puerto y el document root por defecto se especifican en el archivo de configuración: configuration.cfg
+Ante una nueva conexión, se lanza un proceso hijo quién parsea la cabecera HTTP para escribir un response en el socket.
+
+
+Implementación del Cliente
+Al ejecutarlo por parámetros acepta las siguientes definiciones:
+-s [serverip] (default 127.0.0.1)
+-p [serverport] (default 12185)
+-t [refresh_time] (default 180s)
+Una vez parseados y definidos la ip del servidor, su puerto y el refresh time, el cliente leerá el status de los archivos que se encuentran en /proc
+
+
+Protocolo
+@MDT@ rep_size 123123123123@@  //El tamanio siempre es 40
+@TIM@hh:mm:ss@@
+@CLI_S@123123@@
+@CLI@FRisma-Lenovo@@
+@CPU_S@123123@@
+@CPU@XXXXXXXXXXXXXXXXXXXXXXXXXXX@@
+@MEM_S@123123@@
+@MEM@XXXXXXXXXXXXXXXXXXXXXXXXXXX@@
+@HDD_S@123123@@
+@HDD@XXXXXXXXXXXXXXXXXXXXXXXXXXX@@
+@/MDT@
+
+
+Proyecto Open-Source
+Se encuentra alojado en https://github.com/FRisma/proyectoCompu2
+
+
+Bibliografia
+Advanced-linux-programming
+Richard_Stevens_UNIX_Network_Programming_Vol_1.3erEd
+Richard_Stevens_UNIX_Network_Programming_Vol_2.scanned-regular
+Universidad de Mendoza - Computación II                         Gimenez Mauro - Risma Franco
