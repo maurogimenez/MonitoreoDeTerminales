@@ -13,6 +13,13 @@
     #define ISSUE_SIZE 35
     #define END_SIZE 7
 
+    /******LONGITUDdelTAMAÑO********
+     * Por cada sección del reporte, se enviará el
+     * tamaño de lo que mide para que el server
+     * pueda reservar memoria de manera adecuada
+     * y sepa cuanto es lo que tiene que escribir
+    * */
+    #define DEFAULT_LENGTH 8 
 
     /**************RUTAS****************/
     #define PROC_PATH "/proc"

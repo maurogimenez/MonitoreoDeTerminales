@@ -35,32 +35,41 @@ int format2protocol (pcInfo *thisPc){
     char *aux;
     if ( 0 > Malloc(&aux,LARGEST_BUFFER) ) { return -1; } 
 
-    //Nombre
+    //CLI
+    memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->name,strlen(thisPc->name));
     aux[strlen(aux) -1]='\0';
     if (0 > snprintf(thisPc->name, strlen(thisPc->name)+8, "@CLI@%s@@",(char *)aux) )  {goto error;} 
     if(debug) printf("%s\n\n",thisPc->name);
 
+    //CLI_S
+
     //MEM
+    memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->mem,strlen(thisPc->mem));
     aux[strlen(aux) -1]='\0';
     if (0 > snprintf(thisPc->mem, strlen(thisPc->mem)+8, "@MEM@%s@@",(char *)aux) )    {goto error;} 
     if(debug) printf("%s\n\n",thisPc->mem);
-    
+     
+    //MEM_S
+   
     //CPU
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->cpu,strlen(thisPc->cpu));
     aux[strlen(aux) -1]='\0';
     if (0 > snprintf(thisPc->cpu, strlen(thisPc->cpu)+8, "@CPU@%s@@",(char *)aux) )    {goto error;} 
     if(debug) printf("%s\n\n",thisPc->cpu);
-    
+     
+    //CPU_S
+  
     //HDD
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->hdd,strlen(thisPc->hdd));
     aux[strlen(aux) -1]='\0';
     if (0 > snprintf(thisPc->hdd, strlen(thisPc->hdd)+8, "@HDD@%s@@",(char *)aux) )    {goto error;} 
     if(debug) printf("%s\n\n",thisPc->hdd);
-    
+     
+    //HDD_S
 
     //UPTIME
     memset(aux,'\0',LARGEST_BUFFER);
@@ -68,14 +77,17 @@ int format2protocol (pcInfo *thisPc){
     aux[strlen(aux) -1]='\0';
     if (0 > snprintf(thisPc->uptime, strlen(thisPc->uptime)+8, "@UPT@%s@@",(char *)aux) )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->uptime);
- 
+    
+    //UPTIME_S
+
     //ISSUE
     memset(aux,'\0',LARGEST_BUFFER);
     strncpy(aux,thisPc->issue,strlen(thisPc->issue));
     aux[strlen(aux) -1]='\0';
     if (0 > snprintf(thisPc->issue, strlen(thisPc->issue)+8, "@ISS@%s@@",(char *)aux) )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->issue);
- 
+    
+    //ISSUE_S
 
     //VERSION
     memset(aux,'\0',LARGEST_BUFFER);
@@ -83,6 +95,8 @@ int format2protocol (pcInfo *thisPc){
     aux[strlen(aux) -1]='\0';
     if (0 > snprintf(thisPc->version, strlen(thisPc->version)+8, "@VER@%s@@",(char *)aux) )     {goto error;}
     if(debug) printf("%s\n\n",thisPc->version);
+    
+    //VERSION_S
 
     
     //Header

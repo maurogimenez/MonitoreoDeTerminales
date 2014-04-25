@@ -4,14 +4,20 @@
     typedef struct pcInfo{
         char *header;
         char *time;
+        char *name_size;
         char *name;
+        char *mem_size;
         char *mem;
+        char *cpu_size;
         char *cpu;
+        char *hdd_size;
         char *hdd;
+        char *uptime_size;
         char *uptime;
+        char *version_size;
         char *version;
+        char *issue_size;
         char *issue;
-        char *net;
         char *end;
     }pcInfo;
 

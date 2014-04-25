@@ -41,6 +41,14 @@ int main (int argc, char **argv){
     if (0 > Malloc(&(thisPc->issue),ISSUE_SIZE))             { return -1; }
     if (0 > Malloc(&(thisPc->end),END_SIZE))                 { return -1; }
 
+    if (0 > Malloc(&(thisPc->name_size),DEFAULT_LENGTH))     { return -1; }
+    if (0 > Malloc(&(thisPc->mem_size),DEFAULT_LENGTH))      { return -1; }
+    if (0 > Malloc(&(thisPc->cpu_size),DEFAULT_LENGTH))      { return -1; }
+    if (0 > Malloc(&(thisPc->hdd_size),DEFAULT_LENGTH))      { return -1; }
+    if (0 > Malloc(&(thisPc->uptime_size),DEFAULT_LENGTH))   { return -1; }
+    if (0 > Malloc(&(thisPc->version_size),DEFAULT_LENGTH))  { return -1; }
+    if (0 > Malloc(&(thisPc->issue_size),DEFAULT_LENGTH))    { return -1; }
+
     //Manejo argumentos
 	while ((opcion = getopt(argc, argv, "p:s:t:h")) >= 0 ){   //s->server ip  t->refresh time
 		switch (opcion){
@@ -83,6 +91,7 @@ int main (int argc, char **argv){
             format2protocol(thisPc);
             send2server(thisPc,sockDesc);
             alarm(refresh_time);
+            system("pause");
         }
     return 0;
     }
