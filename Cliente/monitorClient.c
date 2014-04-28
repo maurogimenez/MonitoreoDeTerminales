@@ -86,7 +86,7 @@ int main (int argc, char **argv){
             perror ("connect");
             return -1;
     }else{   //Conexion exitosa
-        while ( 0 != refresh_time ){       //Hago que reporte a refresh_time
+        while ( 0 != refresh_time ){       //Hago que reporte segun refresh_time
             getStatsController(thisPc);
             format2protocol(thisPc);
             send2server(thisPc,sockDesc);
