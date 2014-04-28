@@ -1,6 +1,6 @@
 ﻿Monitoreo de Terminales
 //PRUEBA DE COLABORACION DE GIT HUB. FRANQUITO TE QUIERO!!
-
+//2° prueba...
 Funcionamiento general
 Bajo la arquitectura Cliente-Servidor, los clientes se conectan a un socket TCP del servidor enviando un reporte sobre su estado (nombre, memoria, disco, OS, tiempo desde el ultimo reinicio, CPU).
 Dicho servidor procesa los datos y los deja disponible para su consulta a través de un Web Server quien es el encargado de mostrar la información detallada de cada terminal o la de todos, según se desee.
