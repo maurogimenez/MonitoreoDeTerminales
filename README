@@ -1,5 +1,5 @@
 ﻿Monitoreo de Terminales
-
+//okie dokie
 
 Funcionamiento general
 Bajo la arquitectura Cliente-Servidor, los clientes se conectan a un socket TCP del servidor enviando un reporte sobre su estado (nombre, memoria, disco, OS, tiempo desde el ultimo reinicio, CPU).
