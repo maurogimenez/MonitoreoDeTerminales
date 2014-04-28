@@ -39,8 +39,8 @@ int getStatsController(pcInfo* thisPc){
     if (debug)  printf("NOMBRE\n%s\n",thisPc->name);
 
     //CLI_S
-    memset(thisPC->name_size,'\0',DEFAULT_LENGTH);
-    snprintf(thisPC->name_size,strlen(thisPc->name),"%d",strlen(thisPc->name));
+    memset(thisPc->name_size,'\0',DEFAULT_LENGTH);
+    snprintf(thisPc->name_size,strlen(thisPc->name),"%d",(int)strlen(thisPc->name));
 
     
     //TIME********
@@ -59,8 +59,8 @@ int getStatsController(pcInfo* thisPc){
     if (debug)  printf("MEMINFO\n%s\n",thisPc->mem);
     
     //MEM_S
-    memset(thisPC->mem_size,'\0',DEFAULT_LENGTH);
-    snprintf(thisPC->name_size,strlen(thisPc->name),"%d",strlen(thisPc->name));
+    memset(thisPc->mem_size,'\0',DEFAULT_LENGTH);
+    snprintf(thisPc->mem_size,strlen(thisPc->mem),"%d",(int)strlen(thisPc->mem));
   
     
     //CPU_INFO************
@@ -71,8 +71,8 @@ int getStatsController(pcInfo* thisPc){
     if (debug)  printf("CPUINFO\n%s\n",thisPc->cpu);
 
     //CPU_S  
-    memset(thisPC->cpu_size,'\0',DEFAULT_LENGTH);
-    snprintf(thisPC->name_size,strlen(thisPc->name),"%d",strlen(thisPc->name));
+    memset(thisPc->cpu_size,'\0',DEFAULT_LENGTH);
+    snprintf(thisPc->cpu_size,strlen(thisPc->cpu),"%d",(int)strlen(thisPc->cpu));
    
     
     //HDD_INFO***********
@@ -84,7 +84,7 @@ int getStatsController(pcInfo* thisPc){
 
     //HDD_S
     memset(thisPc->hdd_size,'\0',DEFAULT_LENGTH);
-    snprintf(thisPC->name_size,strlen(thisPc->name),"%d",strlen(thisPc->name));
+    snprintf(thisPc->hdd_size,strlen(thisPc->hdd),"%d",(int)strlen(thisPc->hdd));
  
     
     //UPTIME_INFO**********
@@ -95,8 +95,8 @@ int getStatsController(pcInfo* thisPc){
     if (debug)  printf("UPTIMEINFO\n%s\n",thisPc->uptime);
     
     //UPTIME_S
-    memset(thisPC->uptime_size,'\0',DEFAULT_LENGTH);
-    snprintf(thisPC->name_size,strlen(thisPc->name),"%d",strlen(thisPc->name));
+    memset(thisPc->uptime_size,'\0',DEFAULT_LENGTH);
+    snprintf(thisPc->uptime_size,strlen(thisPc->uptime),"%d",(int)strlen(thisPc->uptime));
 
 
     //VERSION_INFO************
@@ -107,8 +107,8 @@ int getStatsController(pcInfo* thisPc){
     if (debug)  printf("VERSIONINFO\n%s\n",thisPc->version);
     
     //VERSION_S
-    memset(thisPC->version_size,'\0',DEFAULT_LENGTH);
-    snprintf(thisPC->name_size,strlen(thisPc->name),"%d",strlen(thisPc->name));
+    memset(thisPc->version_size,'\0',DEFAULT_LENGTH);
+    snprintf(thisPc->version_size,strlen(thisPc->version),"%d",(int)strlen(thisPc->version));
 
        
     //OS_INFO*************
@@ -119,8 +119,8 @@ int getStatsController(pcInfo* thisPc){
     if (debug)  printf("ISUUEINFO\n%s\n",thisPc->issue);
     
     //ISSUE_S
-    memset(thisPC->issue_size,'\0',DEFAULT_LENGTH);
-    snprintf(thisPC->name_size,strlen(thisPc->name),"%d",strlen(thisPc->name));
+    memset(thisPc->issue_size,'\0',DEFAULT_LENGTH);
+    snprintf(thisPc->issue_size,strlen(thisPc->issue),"%d",(int)strlen(thisPc->issue));
 
 
     free(nombre);
